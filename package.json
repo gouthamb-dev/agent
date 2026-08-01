@@ -1,0 +1,36 @@
+{
+  "name": "sys-cli-agent",
+  "version": "0.1.0",
+  "description": "AI-powered conversational agent Web Component with terminal-inspired Technical Brutalism interface",
+  "type": "module",
+  "main": "./dist/sys-cli-agent.es.js",
+  "module": "./dist/sys-cli-agent.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/sys-cli-agent.es.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest --run --coverage"
+  },
+  "dependencies": {
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0",
+    "fast-check": "^3.22.0",
+    "jsdom": "^25.0.0",
+    "@vitest/coverage-v8": "^2.1.0"
+  }
+}
