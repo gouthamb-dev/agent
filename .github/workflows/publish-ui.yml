@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'ui-v*'
-    paths:
-      - 'ui/**'
   workflow_dispatch:
 
 jobs:
@@ -27,8 +25,10 @@ jobs:
       - run: npm run build
 
       - name: Upload to Cloudflare R2
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: r2 object put shared-js-libraries/agent-ui.js --file ui/dist/agent-ui.js --content-type application/javascript
+        run: |
+          npx wrangler r2 object put shared-js-libraries/agent-ui.js \
+            --file dist/agent-ui.js \
+            --content-type "application/javascript"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
