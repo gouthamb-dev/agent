@@ -44,6 +44,10 @@ export class SysCLIAgentElement extends LitElement {
       :host([hidden]) {
         display: none;
       }
+
+      input-bar {
+        flex-shrink: 0;
+      }
     `,
   ];
 

@@ -50,16 +50,15 @@ export class InputBar extends LitElement {
         font-family: var(--sys-font);
         font-size: 14px;
         line-height: 1.4;
-        caret-color: transparent;
+        caret-color: var(--sys-accent);
+        caret-shape: block;
         padding: 0;
         letter-spacing: 0;
       }
 
-      /* Block cursor that blinks at text insertion point */
+      /* Block cursor always visible */
       .input-field:focus {
         outline: none;
-        caret-color: var(--sys-accent);
-        caret-shape: block;
       }
 
       .input-field::placeholder {
@@ -95,6 +94,11 @@ export class InputBar extends LitElement {
   private _inputEl!: HTMLInputElement;
 
   private _previousDisabled = false;
+
+  override firstUpdated(): void {
+    // Auto-focus the input so cursor is visible on load
+    this._inputEl?.focus();
+  }
 
   override updated(changedProperties: Map<string, unknown>): void {
     super.updated(changedProperties);
