@@ -27,6 +27,11 @@ jobs:
       # Build standalone app (index.html + JS bundle)
       - run: npm run build
 
+      # Replace endpoint placeholder with actual value
+      - name: Set endpoint URL
+        run: sed -i 's|__AGENT_ENDPOINT__|${{ vars.AGENT_ENDPOINT_URL }}|g' dist/index.html
+        working-directory: ui
+
       # Build library module (agent-ui.js for CDN import)
       - run: npm run build:lib
 
