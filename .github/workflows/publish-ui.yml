@@ -1,4 +1,4 @@
-name: Build & Deploy agent-ui to R2
+name: Build & Deploy agent-ui
 
 on:
   push:
@@ -24,17 +24,29 @@ jobs:
 
       - run: npm ci
 
+      # Build standalone app (index.html + JS bundle)
       - run: npm run build
 
-      - name: Configure AWS CLI for R2
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          aws configure set default.region auto
+      # Build library module (agent-ui.js for CDN import)
+      - run: npm run build:lib
 
-      - name: Upload to Cloudflare R2
+      # Upload library JS to R2 for CDN
+      - name: Upload agent-ui.js to R2
         run: |
-          aws s3 cp dist/agent-ui.js s3://shared-js-libraries/agent-ui.js \
+          aws s3 cp dist-lib/agent-ui.js s3://shared-js-libraries/agent-ui.js \
             --endpoint-url https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com \
-            --content-type "application/javascript" \
-            --cache-control "public, max-age=0, must-revalidate"
+            --content-type "application/javascript"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+
+      # Deploy standalone app to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: agent-ui
+          directory: ui/dist
+          workingDirectory: .
