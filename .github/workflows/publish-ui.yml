@@ -43,7 +43,9 @@ jobs:
 
       # Deploy standalone app to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy ui/dist --project-name=agent-ui
+        run: |
+          npx wrangler pages project create agent-ui --production-branch main 2>/dev/null || true
+          npx wrangler pages deploy ui/dist --project-name=agent-ui
         working-directory: .
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
