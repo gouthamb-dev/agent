@@ -3,39 +3,30 @@ node_modules/
 
 # Build output
 dist/
+cdk.out/
 
-# Environment files
+# Environment
 .env
 .env.*
 !.env.example
 
-# IDE / Editor
+# IDE
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
-Desktop.ini
-
-# Test & Coverage
-coverage/
 
 # Logs
 *.log
-npm-debug.log*
-
-# TypeScript
 *.tsbuildinfo
 
-# CDK
-cdk.out/
+# Python
+__pycache__/
+*.pyc
+.venv/
 
-# AgentCore CLI logs
-backend/agentcore/.cli/
-
-# Misc
-*.local
+# AgentCore CLI
+backend/SysCLIAgent/agentcore/.cli/logs/

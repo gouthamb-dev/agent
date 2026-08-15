@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SYS_CLI // AGENT</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #1a1a1a;
+      font-family: system-ui, sans-serif;
+      padding: 24px;
+    }
+    sys-cli-agent {
+      width: 100%;
+      max-width: 720px;
+      height: 520px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <sys-cli-agent
+    endpoint="http://localhost:8080"
+    title="GOUTHAM // AGENT"
+    placeholder="Ask about my experience, skills, or projects..."
+    greeting="Hey! I'm an AI assistant. Ask me anything about Goutham's work."
+  ></sys-cli-agent>
+  <script type="module" src="/src/index.ts"></script>
+</body>
+</html>
