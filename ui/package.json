@@ -18,7 +18,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "prepublishOnly": "npm run build"
+    "build:lib": "tsc && vite build --config vite.lib.config.ts",
+    "prepublishOnly": "npm run build:lib"
   },
   "dependencies": {
     "lit": "^3.2.0"

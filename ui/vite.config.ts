@@ -3,11 +3,10 @@ import { resolve } from 'path';
 
 export default defineConfig({
   build: {
-    lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      formats: ['es'],
-      fileName: 'agent-ui',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
     },
-    rollupOptions: {},
   },
 });
