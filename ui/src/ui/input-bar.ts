@@ -95,11 +95,6 @@ export class InputBar extends LitElement {
 
   private _previousDisabled = false;
 
-  override firstUpdated(): void {
-    // Auto-focus the input so cursor is visible on load
-    this._inputEl?.focus();
-  }
-
   override updated(changedProperties: Map<string, unknown>): void {
     super.updated(changedProperties);
 
