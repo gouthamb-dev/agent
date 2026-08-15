@@ -45,6 +45,16 @@ export class SysCLIAgentElement extends LitElement {
         display: none;
       }
 
+      terminal-stream {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      sys-header-bar {
+        flex-shrink: 0;
+      }
+
       input-bar {
         flex-shrink: 0;
       }
