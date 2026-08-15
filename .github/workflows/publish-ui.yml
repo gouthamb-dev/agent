@@ -31,4 +31,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: r2 object put cdn-assets/agent-ui.js --file ui/dist/agent-ui.js --content-type application/javascript
+          command: r2 object put shared-js-libraries/agent-ui.js --file ui/dist/agent-ui.js --content-type application/javascript
