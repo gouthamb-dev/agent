@@ -1,7 +1,10 @@
 {
-  "name": "agentcore-proxy",
+  "name": "agent-proxy",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "build": "esbuild handler.ts --bundle --platform=node --target=node24 --outfile=dist/handler.js --external:@aws-sdk/* && cp ../system-prompt.md dist/"
+  },
   "dependencies": {
     "@aws-sdk/client-bedrock-agentcore": "^3.800.0"
   },
@@ -10,8 +13,5 @@
     "@types/node": "^22.0.0",
     "esbuild": "^0.24.0",
     "typescript": "^5.5.0"
-  },
-  "scripts": {
-    "build": "esbuild handler.ts --bundle --platform=node --target=node24 --outfile=dist/handler.js --external:@aws-sdk/*"
   }
 }

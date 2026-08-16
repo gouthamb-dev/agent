@@ -1,0 +1,93 @@
+name: Deploy Backend (Lambda proxy + optional AgentCore)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Deploy mode'
+        required: true
+        default: 'direct'
+        type: choice
+        options:
+          - direct
+          - agentcore
+          - both
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy-proxy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - run: npm ci
+
+      - name: Build proxy Lambda
+        run: cd proxy && npm ci && npm run build
+
+      - name: Deploy CDK (Lambda Function URL)
+        id: cdk-deploy
+        run: |
+          npx cdk deploy --require-approval never --outputs-file cdk-outputs.json \
+            --context proxyMode=${{ inputs.mode || 'direct' }} \
+            --context agentRuntimeArn=${{ vars.AGENT_RUNTIME_ARN || '' }}
+
+      - name: Set AGENT_ENDPOINT_URL variable
+        run: |
+          URL=$(jq -r '.["agent-proxy"].ProxyUrl' cdk-outputs.json)
+          echo "PROXY_URL=$URL" >> $GITHUB_OUTPUT
+          # Update the repo variable for the UI workflow
+          gh variable set AGENT_ENDPOINT_URL --body "$URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: output-url
+
+  deploy-agentcore:
+    if: inputs.mode == 'agentcore' || inputs.mode == 'both'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/SysCLIAgent
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - run: npm install -g @aws/agentcore
+
+      - name: Deploy to AgentCore Runtime
+        run: agentcore deploy -y

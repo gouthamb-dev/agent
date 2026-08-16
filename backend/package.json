@@ -1,0 +1,15 @@
+{
+  "name": "agent-backend",
+  "version": "0.1.0",
+  "scripts": {
+    "build:proxy": "cd proxy && npm run build",
+    "deploy": "npm run build:proxy && npx cdk deploy --require-approval never",
+    "destroy": "npx cdk destroy --force"
+  },
+  "devDependencies": {
+    "aws-cdk-lib": "^2.170.0",
+    "constructs": "^10.4.0",
+    "typescript": "^5.5.0",
+    "ts-node": "^10.9.0"
+  }
+}

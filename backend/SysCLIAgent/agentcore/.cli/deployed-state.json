@@ -1,17 +1,3 @@
 {
-  "targets": {
-    "default": {
-      "resources": {
-        "runtimes": {
-          "SysCLIAgent": {
-            "runtimeId": "SysCLIAgent_SysCLIAgent-wSHA3C5wPd",
-            "runtimeArn": "arn:aws:bedrock-agentcore:us-east-1:651697298459:runtime/SysCLIAgent_SysCLIAgent-wSHA3C5wPd",
-            "roleArn": "arn:aws:iam::651697298459:role/AgentCore-SysCLIAgent-def-ApplicationAgentSysCLIAge-WdTmeXJwePxU"
-          }
-        },
-        "stackName": "AgentCore-SysCLIAgent-default",
-        "deployHash": "915c2f341f2f3457"
-      }
-    }
-  }
+  "targets": {}
 }

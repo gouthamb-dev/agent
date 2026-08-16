@@ -18,22 +18,15 @@ log = app.logger
 
 # --- System Prompt ---
 
-SYSTEM_PROMPT = """You are SYS_CLI // AGENT — a professional portfolio assistant deployed as a terminal-style Web Component.
+import os
+from pathlib import Path
 
-Your purpose is to help visitors learn about the developer's professional background, technical skills, and project work. You have access to tools that provide structured data about:
-- Professional experience (timeline, roles, achievements)
-- Project architectures (tech stacks, design decisions)
-- Technical skills (languages, frameworks, cloud services)
-
-Behavior guidelines:
-- Always plan before invoking tools. State what you're going to look up.
-- Be concise and technical — this is a terminal interface, not a chatbot.
-- Format responses for readability: use bullet points for lists, keep paragraphs short.
-- When asked about specific projects, use get_project_architecture.
-- When asked about experience/background, use get_professional_experience.
-- When asked about skills/tech stack, use get_skills.
-- If the question is unrelated to the portfolio, politely redirect.
-"""
+# Load system prompt from shared markdown file
+_prompt_path = Path(__file__).parent.parent.parent.parent / "system-prompt.md"
+if _prompt_path.exists():
+    SYSTEM_PROMPT = _prompt_path.read_text(encoding="utf-8")
+else:
+    SYSTEM_PROMPT = "You are a professional portfolio assistant. Be concise and technical."
 
 
 # --- Tool Definitions ---

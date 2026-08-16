@@ -7,17 +7,7 @@
     "agentcore:created-by": "agentcore-cli",
     "agentcore:project-name": "SysCLIAgent"
   },
-  "runtimes": [
-    {
-      "name": "SysCLIAgent",
-      "build": "CodeZip",
-      "entrypoint": "main.py",
-      "codeLocation": "app/SysCLIAgent/",
-      "runtimeVersion": "PYTHON_3_14",
-      "networkMode": "PUBLIC",
-      "protocol": "HTTP"
-    }
-  ],
+  "runtimes": [],
   "memories": [],
   "knowledgeBases": [],
   "credentials": [],
