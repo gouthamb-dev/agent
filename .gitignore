@@ -30,3 +30,6 @@ __pycache__/
 
 # AgentCore CLI
 backend/SysCLIAgent/agentcore/.cli/logs/
+
+# Personal biodata
+backend/sampleprompt.md
