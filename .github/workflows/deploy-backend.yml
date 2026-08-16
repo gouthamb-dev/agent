@@ -47,21 +47,10 @@ jobs:
         run: cd proxy && npm install && npm run build
 
       - name: Deploy CDK (Lambda Function URL)
-        id: cdk-deploy
         run: |
-          npx cdk deploy --require-approval never --outputs-file cdk-outputs.json \
+          npx cdk deploy --require-approval never \
             --context proxyMode=${{ inputs.mode || 'direct' }} \
             --context agentRuntimeArn=${{ vars.AGENT_RUNTIME_ARN || '' }}
-
-      - name: Set AGENT_ENDPOINT_URL variable
-        run: |
-          URL=$(jq -r '.["agent-proxy"].ProxyUrl' cdk-outputs.json)
-          echo "PROXY_URL=$URL" >> $GITHUB_OUTPUT
-          # Update the repo variable for the UI workflow
-          gh variable set AGENT_ENDPOINT_URL --body "$URL"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: output-url
 
   deploy-agentcore:
     if: inputs.mode == 'agentcore' || inputs.mode == 'both'
