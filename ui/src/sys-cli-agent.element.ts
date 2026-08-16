@@ -82,6 +82,10 @@ export class SysCLIAgentElement extends LitElement {
   @property({ type: String, reflect: true, attribute: 'greeting' })
   greeting: string = '';
 
+  /** Language for agent responses (e.g. "en", "es", "hi", "fr", "te"). Defaults to English. */
+  @property({ type: String, reflect: true, attribute: 'lang' })
+  override lang: string = 'en';
+
   @state() private _connectionStatus: 'idle' | 'connecting' | 'connected' | 'error' = 'idle';
   @state() private _entries: TerminalEntry[] = [];
   @state() private _isProcessing: boolean = false;
@@ -206,7 +210,7 @@ export class SysCLIAgentElement extends LitElement {
   override render() {
     return html`
       <sys-header-bar .status=${this._connectionStatus} .agentTitle=${this.agentTitle}></sys-header-bar>
-      <terminal-stream .entries=${this._entries}></terminal-stream>
+      <terminal-stream .entries=${this._entries} lang=${this.lang}></terminal-stream>
       <input-bar ?disabled=${this._isProcessing} .placeholder=${this.inputPlaceholder} @query-submit=${this._handleQuerySubmit}></input-bar>
     `;
   }
@@ -235,6 +239,7 @@ export class SysCLIAgentElement extends LitElement {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: text,
+          lang: this.lang || 'en',
         }),
         signal: this._abortController.signal,
       });

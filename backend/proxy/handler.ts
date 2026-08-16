@@ -42,6 +42,7 @@ const agentCore = new BedrockAgentCoreClient();
 
 interface UserRequest {
   prompt: string;
+  lang?: string;
   runtimeSessionId?: string;
 }
 
@@ -110,9 +111,15 @@ export const handler = awslambda.streamifyResponse(
  * Streams text deltas as SSE events.
  */
 async function handleDirect(req: UserRequest, stream: NodeJS.WritableStream) {
+  // Build system prompt with language instruction if non-English
+  let systemPrompt = SYSTEM_PROMPT;
+  if (req.lang && req.lang !== 'en') {
+    systemPrompt += `\n\n## Language Override\nThe user has requested responses in language code "${req.lang}". You MUST respond entirely in this language. Technical terms (AWS services, certifications, tool names) may stay in English where no standard translation exists.`;
+  }
+
   const command = new ConverseStreamCommand({
     modelId: MODEL_ID,
-    system: [{ text: SYSTEM_PROMPT }],
+    system: [{ text: systemPrompt }],
     messages: [
       { role: 'user', content: [{ text: req.prompt }] },
     ],
@@ -146,10 +153,16 @@ async function handleDirect(req: UserRequest, stream: NodeJS.WritableStream) {
 async function handleAgentCore(req: UserRequest, stream: NodeJS.WritableStream) {
   const sessionId = req.runtimeSessionId || randomUUID() + '-' + randomUUID().slice(0, 12);
 
+  // Build payload with language preference
+  const payload: Record<string, string> = { prompt: req.prompt };
+  if (req.lang && req.lang !== 'en') {
+    payload.prompt = `[Respond in language: ${req.lang}]\n\n${req.prompt}`;
+  }
+
   const command = new InvokeAgentRuntimeCommand({
     agentRuntimeArn: AGENT_ARN,
     runtimeSessionId: sessionId,
-    payload: new TextEncoder().encode(JSON.stringify({ prompt: req.prompt })),
+    payload: new TextEncoder().encode(JSON.stringify(payload)),
     qualifier: 'DEFAULT',
   });
 
