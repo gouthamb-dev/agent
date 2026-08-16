@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 24
 
-      - run: npm ci
+      - run: npm install
 
       # Build standalone app (index.html + JS bundle)
       - run: npm run build

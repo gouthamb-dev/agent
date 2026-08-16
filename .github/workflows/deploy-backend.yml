@@ -41,10 +41,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - run: npm ci
+      - run: npm install
 
       - name: Build proxy Lambda
-        run: cd proxy && npm ci && npm run build
+        run: cd proxy && npm install && npm run build
 
       - name: Deploy CDK (Lambda Function URL)
         id: cdk-deploy
