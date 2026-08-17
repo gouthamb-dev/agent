@@ -29,7 +29,13 @@ __pycache__/
 .venv/
 
 # AgentCore CLI
-backend/SysCLIAgent/agentcore/.cli/logs/
+backend/SysCLIAgent/agentcore/.cli/
 
-# Personal biodata
+# Diagram backups
+*.drawio.bkp
+.$*.drawio.bkp
+
+# Personal biodata / sensitive data - DO NOT commit to public repos
 backend/sampleprompt.md
+backend/SysCLIAgent/agentcore/aws-targets.json
+backend/SysCLIAgent/agentcore/.cli/
